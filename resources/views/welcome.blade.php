@@ -50,7 +50,7 @@
             @endif
         </header>
         @if(Auth::check())
-            <p>Bonjour, {{ Auth::user()->name }}. Votre rôle est : {{ Auth::user()->role->value }}</p>
+            <p>Bonjour, {{ Auth::user()->name }}. Votre rôle est : {{ Auth::user()->role }}</p>
         @endif
 
         @if (Route::has('login'))

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Event;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,20 +15,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->admin()->create([
-            'email' => 'admin@example.com',
-            'name'  => 'Admin1',
-            'password' => Hash::make('admin'),
-        ]);
+        Event::factory()->count(10)->create();
 
-        User::factory()->organisateur()->create([
-            'email' => 'organisateur@example.com',
-            'name'  => 'Organisateur1'
-        ]);
-
-        User::factory()->client()->create([
-            'email' => 'client@example.com',
-            'name'  => 'Client1'
-        ]);
+//        User::factory()->admin()->create([
+//            'email' => 'admin@example.com',
+//            'name'  => 'Admin1',
+//            'password' => Hash::make('admin'),
+//        ]);
+//
+//        User::factory()->organisateur()->create([
+//            'email' => 'organisateur@example.com',
+//            'name'  => 'Organisateur1'
+//        ]);
+//
+//        User::factory()->client()->create([
+//            'email' => 'client@example.com',
+//            'name'  => 'Client1'
+//        ]);
     }
 }
