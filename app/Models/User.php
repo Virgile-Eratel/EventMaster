@@ -49,6 +49,14 @@ class User extends Authenticatable
         ];
     }
 
+    public function organizedEvents()
+    {
+        return $this->hasMany(Event::class, 'organisateur_id');
+    }
+    public function registeredEvents()
+    {
+        return $this->belongsToMany(Event::class, 'event_user');
+    }
     public function isAdmin(): bool
     {
         return $this->role === Role::Admin;

@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Event extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'banner_image',
+        'description',
+        'event_date',
+        'address',
+        'latitude',
+        'longitude',
+        'status',
+        'max_participants',
+        'organisateur_id',
+    ];
+
+    public function organisateur()
+    {
+        return $this->belongsTo(User::class, 'organisateur_id');
+    }
+    public function clients()
+    {
+        return $this->belongsToMany(User::class, 'event_user')
+            ->where('role', 'client');
+    }
+}
