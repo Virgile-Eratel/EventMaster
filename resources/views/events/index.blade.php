@@ -5,6 +5,21 @@
         </h2>
     </x-slot>
     <div class="container mx-auto px-4 mt-6">
+
+        @if(auth()->check() && (auth()->user()->isAdmin() || auth()->user()->isOrganisateur()))
+            <div class="mb-4">
+                @if(request()->has('my_events'))
+                    <button onclick="window.location.href='{{ route('events') }}'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Vers tous les événements
+                    </button>
+                @else
+                    <button onclick="window.location.href='{{ route('events', ['my_events' => 1]) }}'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Vers mes événements
+                    </button>
+                @endif
+            </div>
+        @endif
+
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
