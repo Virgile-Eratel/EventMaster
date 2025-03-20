@@ -66,4 +66,40 @@ class EventController extends Controller
     {
         //
     }
+
+    public function register(Event $event)
+    {
+        $user = auth()->user();
+
+         if (!$user->isClient()) {
+            return redirect()->back()->with('error', "Seuls les clients peuvent s'inscrire.");
+        }
+
+         if ($event->status !== 'remplissage_en_cours') {
+            return redirect()->back()->with('error', "Les inscriptions ne sont pas ouvertes pour cet événement.");
+        }
+
+         if ($event->clients()->count() >= $event->max_participants) {
+            return redirect()->back()->with('error', "Le nombre maximum de participants est atteint.");
+        }
+
+         if (!$event->clients()->where('user_id', $user->id)->exists()) {
+            $event->clients()->attach($user->id);
+        }
+
+        return redirect()->back()->with('success', "Vous êtes inscrit à l'événement.");
+    }
+
+    public function unregister(Event $event)
+    {
+        $user = auth()->user();
+
+         if (!$user->isClient()) {
+            return redirect()->back()->with('error', "Seuls les clients peuvent se désinscrire.");
+        }
+
+         $event->clients()->detach($user->id);
+
+        return redirect()->back()->with('success', "Vous êtes désinscrit de l'événement.");
+    }
 }

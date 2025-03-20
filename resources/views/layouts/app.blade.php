@@ -32,5 +32,28 @@
                 {{ $slot }}
             </main>
         </div>
+        @if(session('success'))
+            <div id="snackbar" class="fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity duration-300">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div id="snackbar" class="fixed bottom-4 right-4 bg-red-600 text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity duration-300">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var snackbar = document.getElementById('snackbar');
+                if (snackbar) {
+                    snackbar.classList.remove('opacity-0');
+                    setTimeout(function(){
+                        snackbar.classList.add('opacity-0');
+                    }, 3000);
+                }
+            });
+        </script>
     </body>
 </html>

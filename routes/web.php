@@ -18,6 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/events',[EventController::class, 'index'])->name('events');
     Route::get('/event/{event}', [EventController::class, 'show'])->name('event.show');
+    Route::post('/event/{event}/register', [EventController::class, 'register'])->name('event.register');
+    Route::delete('/event/{event}/unregister', [EventController::class, 'unregister'])->name('event.unregister');
 });
 
 require __DIR__.'/auth.php';
