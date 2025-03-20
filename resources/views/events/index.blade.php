@@ -34,7 +34,7 @@
                 </thead>
                 <tbody>
                 @foreach($events as $event)
-                    <tr class="bg-white border-b hover:bg-gray-50">
+                    <tr onclick="window.location.href='{{ route('event.show', $event) }}'" class="bg-white border-b hover:bg-gray-50 cursor-pointer">
                         <td class="px-6 py-4">{{ $event->id }}</td>
                         <td class="px-6 py-4">{{ $event->title }}</td>
                         <td class="px-6 py-4">{{ \Carbon\Carbon::parse($event->event_date)->format('d/m/Y H:i') }}</td>
