@@ -31,4 +31,12 @@ class Event extends Model
         return $this->belongsToMany(User::class, 'event_user')
             ->where('role', 'client');
     }
+    public function updateStatus()
+    {
+        if ($this->clients()->count() >= $this->max_participants) {
+            $this->update(['status' => 'complet']);
+        } else {
+            $this->update(['status' => 'remplissage_en_cours']);
+        }
+    }
 }

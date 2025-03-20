@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -78,7 +79,10 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        //
+        if (auth()->user()->isAdmin() || (auth()->user()->isOrganisateur() && auth()->user()->id == $event->organisateur_id)) {
+            return view('events.edit', compact('event'));
+        }
+        abort(403, 'Vous n\'êtes pas autorisé à modifier cet événement.');
     }
 
     /**
@@ -86,7 +90,29 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        //
+         if (!(auth()->user()->isAdmin() || (auth()->user()->isOrganisateur() && auth()->user()->id == $event->organisateur_id))) {
+            abort(403, 'Vous n\'êtes pas autorisé à modifier cet événement.');
+        }
+
+        $data = $request->validate([
+            'title'          => 'required|string|max:255',
+            'banner_image'   => 'nullable|image',
+            'description'    => 'nullable|string',
+            'event_date'     => 'required|date',
+            'address'        => 'nullable|string',
+            'latitude'       => 'nullable|numeric',
+            'longitude'      => 'nullable|numeric',
+            'status'         => 'required|string',
+            'max_participants' => 'required|integer',
+        ]);
+
+        if ($request->hasFile('banner_image')) {
+            $data['banner_image'] = $request->file('banner_image')->store('images/events', 'public');
+        }
+
+        $event->update($data);
+
+        return redirect()->route('event.show', $event)->with('success', "L'événement a bien été mis à jour.");
     }
 
     /**
@@ -117,6 +143,8 @@ class EventController extends Controller
             $event->clients()->attach($user->id);
         }
 
+        $event->updateStatus();
+
         return redirect()->back()->with('success', "Vous êtes inscrit à l'événement.");
     }
 
@@ -129,6 +157,8 @@ class EventController extends Controller
         }
 
          $event->clients()->detach($user->id);
+
+         $event->updateStatus();
 
         return redirect()->back()->with('success', "Vous êtes désinscrit de l'événement.");
     }

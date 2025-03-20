@@ -19,12 +19,12 @@
                 <span class="font-bold">Date :</span>
                 {{ \Carbon\Carbon::parse($event->event_date)->format('d/m/Y H:i') }}
             </p>
+            <p class="mb-2"><span class="font-bold">Description :</span> {{ $event->description }}</p>
             <p class="mb-2"><span class="font-bold">Organisateur :</span> {{ $event->organisateur->name }}</p>
             <p class="mb-2"><span class="font-bold">Statut :</span> {{ $event->status }}</p>
             <p class="mb-2"><span class="font-bold">Max Participants :</span> {{ $event->max_participants }}</p>
 
-            <!-- Intégration de la liste des participants dans le même bloc -->
-            <div x-data="{ open: false }">
+             <div x-data="{ open: false }">
                 <p class="mb-2">
                     <span class="font-bold">Participants ({{ $event->clients->count() }}) :</span>
                     <button @click="open = !open" class="ml-2 text-blue-500 underline">
@@ -67,6 +67,14 @@
                     <p class="text-gray-600">Les inscriptions ne sont pas ouvertes ou le nombre maximum de participants est atteint.</p>
                 @endif
             @endif
+        @endif
+        @if(auth()->check() && (auth()->user()->isAdmin() || (auth()->user()->isOrganisateur() && auth()->user()->id == $event->organisateur_id)))
+            <div class="mt-4">
+                <a href="{{ route('event.edit', $event) }}"
+                   class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+                    Modifier l'événement
+                </a>
+            </div>
         @endif
     </div>
 </x-app-layout>

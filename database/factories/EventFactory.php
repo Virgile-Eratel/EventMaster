@@ -14,7 +14,7 @@ class EventFactory extends Factory
     {
         return [
             'title'            => $this->faker->sentence(6),
-            'banner_image'     => $this->faker->imageUrl(640, 480, 'event', true),
+            'banner_image'     => 'images/events/iGZLZM8Ci6dd2rwOFBBtu3EoCPoUqRNWj7DhLfcw.jpg',
             'description'      => $this->faker->paragraph(3),
             'event_date'       => $this->faker->dateTimeBetween('now', '+1 year'),
             'address'          => $this->faker->address(),

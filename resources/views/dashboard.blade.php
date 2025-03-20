@@ -1,8 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
+            @if(auth()->check())
+                @if(auth()->user()->isAdmin())
+                    {{ __('Dashboard Admin') }}
+                @elseif(auth()->user()->isOrganisateur())
+                    {{ __('Dashboard Organisateur') }}
+                @elseif(auth()->user()->isClient())
+                    {{ __('Dashboard Client') }}
+                @else
+                    {{ __('Dashboard') }}
+                @endif
+            @else
+                {{ __('Dashboard') }}
+            @endif        </h2>
     </x-slot>
 
     <div class="py-12">
