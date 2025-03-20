@@ -17,20 +17,20 @@ class DatabaseSeeder extends Seeder
     {
         Event::factory()->count(10)->create();
 
-//        User::factory()->admin()->create([
-//            'email' => 'admin@example.com',
-//            'name'  => 'Admin1',
-//            'password' => Hash::make('admin'),
-//        ]);
-//
-//        User::factory()->organisateur()->create([
-//            'email' => 'organisateur@example.com',
-//            'name'  => 'Organisateur1'
-//        ]);
-//
-//        User::factory()->client()->create([
-//            'email' => 'client@example.com',
-//            'name'  => 'Client1'
-//        ]);
+        User::factory()->admin()->create([
+            'email' => 'admin@example.com',
+            'name'  => 'Admin1',
+            'password' => Hash::make('admin'),
+        ]);
+
+        User::factory()->organisateur()->create([
+            'email' => 'organisateur@example.com',
+            'name'  => 'Organisateur1'
+        ]);
+
+        User::factory()->client()->create([
+            'email' => 'client@example.com',
+            'name'  => 'Client1'
+        ]);
     }
 }

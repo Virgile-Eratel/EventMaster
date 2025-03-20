@@ -32,7 +32,10 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+    }
+    public function showCreate()
+    {
+        return view('events.create');
     }
 
     /**
@@ -40,7 +43,26 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title'          => 'required|string|max:255',
+            'banner_image'   => 'nullable|image',
+            'description'    => 'nullable|string',
+            'event_date'     => 'required|date',
+            'address'        => 'nullable|string',
+            'latitude'       => 'nullable|numeric',
+            'longitude'      => 'nullable|numeric',
+            'status'         => 'required|string',
+            'max_participants' => 'required|integer',
+            'organisateur_id' => 'required|exists:users,id',
+        ]);
+
+        if ($request->hasFile('banner_image')) {
+             $data['banner_image'] = $request->file('banner_image')->store('/images/events', 'public');
+        }
+
+        Event::create($data);
+
+        return redirect()->route('events')->with('success', "L'événement a bien été créé.");
     }
 
     /**

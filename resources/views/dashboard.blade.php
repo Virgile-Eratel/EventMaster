@@ -7,16 +7,17 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                {{-- Section pour le client --}}
                 @if(auth()->check() && auth()->user()->isClient())
                     <h3 class="text-lg font-bold mb-4">Mes prochains événements</h3>
 
                     @php
-                         $registeredEvents = auth()->user()->registeredEvents()
-                            ->where('event_date', '>=', now())
-                            ->orderBy('event_date', 'asc')
-                            ->limit(5)
-                            ->get();
+                        $registeredEvents = auth()->user()->registeredEvents()
+                           ->where('event_date', '>=', now())
+                           ->orderBy('event_date', 'asc')
+                           ->limit(5)
+                           ->get();
                     @endphp
 
                     @if($registeredEvents->count() > 0)
@@ -37,6 +38,16 @@
                     @else
                         <p class="text-gray-600">Vous n'êtes inscrit à aucun événement :'(</p>
                     @endif
+                @endif
+
+                {{-- Bouton de création d'événement pour admin/organisateur --}}
+                @if(auth()->check() && (auth()->user()->isAdmin() || auth()->user()->isOrganisateur()))
+                    <div class="mt-6">
+                        <a href="{{ route('events.create') }}"
+                           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Créer un événement
+                        </a>
+                    </div>
                 @endif
             </div>
         </div>

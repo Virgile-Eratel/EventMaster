@@ -5,7 +5,14 @@
         </h2>
     </x-slot>
     <div class="container mx-auto px-4 mt-6">
-        <div class="bg-white shadow-md rounded p-6 mb-6">
+        <div class="bg-white shadow-md rounded mb-6">
+            @if($event->banner_image)
+                <div class="w-full">
+                    <img src="{{ asset('storage/' . $event->banner_image) }}" alt="{{ $event->title }}"
+                         class="w-full h-64 object-cover rounded-t">
+                </div>
+            @endif
+            <div class="p-6">
             <p class="mb-2"><span class="font-bold">ID :</span> {{ $event->id }}</p>
             <p class="mb-2"><span class="font-bold">Titre :</span> {{ $event->title }}</p>
             <p class="mb-2">
@@ -35,6 +42,7 @@
                         <p class="text-gray-600">Aucun participant pour le moment.</p>
                     @endif
                 </div>
+            </div>
             </div>
         </div>
 

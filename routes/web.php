@@ -20,6 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/event/{event}', [EventController::class, 'show'])->name('event.show');
     Route::post('/event/{event}/register', [EventController::class, 'register'])->name('event.register');
     Route::delete('/event/{event}/unregister', [EventController::class, 'unregister'])->name('event.unregister');
+    Route::get('/events/create', [EventController::class, 'showCreate'])->name('events.create');
+    Route::post('/events/create', [EventController::class, 'store'])->name('events.store');
 });
 
 require __DIR__.'/auth.php';
