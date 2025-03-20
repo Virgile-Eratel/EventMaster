@@ -12,9 +12,17 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
+        // les events de l'orga co
         $query = Event::with('organisateur');
         if ($request->has('my_events') && auth()->check() && (auth()->user()->isAdmin() || auth()->user()->isOrganisateur())) {
             $query->where('organisateur_id', auth()->user()->id);
+        }
+        // les events du client co
+        if ($request->has('registered') && auth()->check() && auth()->user()->isClient()) {
+            $user = auth()->user();
+            $query->whereHas('clients', function($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
         }
         $events = $query->paginate(10);
         return view('events.index', ['events' => $events]);

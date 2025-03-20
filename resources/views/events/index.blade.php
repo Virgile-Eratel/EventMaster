@@ -19,6 +19,19 @@
                 @endif
             </div>
         @endif
+            @if(auth()->check() && auth()->user()->isClient())
+                <div class="mb-4">
+                    @if(request()->has('registered'))
+                        <button onclick="window.location.href='{{ route('events') }}'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Voir tous les événements
+                        </button>
+                    @else
+                        <button onclick="window.location.href='{{ route('events', ['registered' => 1]) }}'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Voir mes inscriptions
+                        </button>
+                    @endif
+                </div>
+            @endif
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500">
