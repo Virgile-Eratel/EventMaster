@@ -20,6 +20,14 @@ class Event extends Model
         'status',
         'max_participants',
         'organisateur_id',
+        'price',
+        'is_free',
+    ];
+
+    protected $casts = [
+        'event_date' => 'datetime',
+        'is_free' => 'boolean',
+        'price' => 'decimal:2',
     ];
 
     public function organisateur()

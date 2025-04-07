@@ -32,5 +32,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'marty.virgile@gmail.com',
             'name'  => 'Client1'
         ]);
+
+        // Exécuter le seeder d'événements payants
+        $this->call([
+            PaidEventSeeder::class,
+        ]);
     }
 }

@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         // Vous pouvez ajouter ici vos commandes personnalisées, par exemple :
-        // \App\Console\Commands\YourCustomCommand::class,
+        \App\Console\Commands\CreatePaidEvents::class,
+        \App\Console\Commands\SendEventReminders::class,
     ];
 
     /**

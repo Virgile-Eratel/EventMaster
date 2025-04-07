@@ -23,6 +23,14 @@
             <p class="mb-2"><span class="font-bold">Organisateur :</span> {{ $event->organisateur->name }}</p>
             <p class="mb-2"><span class="font-bold">Statut :</span> {{ $event->status }}</p>
             <p class="mb-2"><span class="font-bold">Max Participants :</span> {{ $event->max_participants }}</p>
+            <p class="mb-2">
+                <span class="font-bold">Prix :</span>
+                @if($event->is_free)
+                    <span class="text-green-600 font-semibold">Gratuit</span>
+                @else
+                    <span class="font-semibold">{{ number_format($event->price, 2, ',', ' ') }} €</span>
+                @endif
+            </p>
 
              <div x-data="{ open: false }">
                 <p class="mb-2">

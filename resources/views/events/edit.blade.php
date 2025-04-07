@@ -78,6 +78,26 @@
                                    class="mt-1 block w-full border-gray-300 rounded">
                         </div>
 
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-medium">Type d'événement :</label>
+                            <div class="mt-2">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="is_free" value="1" {{ old('is_free', $event->is_free) == '1' ? 'checked' : '' }} class="form-radio" onchange="togglePriceField()">
+                                    <span class="ml-2">Gratuit</span>
+                                </label>
+                                <label class="inline-flex items-center ml-6">
+                                    <input type="radio" name="is_free" value="0" {{ old('is_free', $event->is_free) == '0' ? 'checked' : '' }} class="form-radio" onchange="togglePriceField()">
+                                    <span class="ml-2">Payant</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="price-field" class="mb-4" style="display: {{ old('is_free', $event->is_free) == '0' ? 'block' : 'none' }}">
+                            <label for="price" class="block text-gray-700 font-medium">Prix (€) :</label>
+                            <input type="number" step="0.01" min="0" name="price" id="price" value="{{ old('price', $event->price) }}"
+                                   class="mt-1 block w-full border-gray-300 rounded">
+                        </div>
+
                          @if(auth()->user()->isOrganisateur())
                             <input type="hidden" name="organisateur_id" value="{{ auth()->user()->id }}">
                         @endif
@@ -104,3 +124,21 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    function togglePriceField() {
+        const isFree = document.querySelector('input[name="is_free"]:checked').value === '1';
+        const priceField = document.getElementById('price-field');
+
+        if (isFree) {
+            priceField.style.display = 'none';
+            document.getElementById('price').value = '0.00';
+        } else {
+            priceField.style.display = 'block';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        togglePriceField();
+    });
+</script>

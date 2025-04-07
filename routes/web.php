@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/event/{event}/edit', [EventController::class, 'edit'])->name('event.edit');
     Route::put('/event/{event}', [EventController::class, 'update'])->name('event.update');
     Route::post('/event/{event}/cancel', [EventController::class, 'cancel'])->name('event.cancel');
+
+    Route::get('/payment/checkout/{event}', [PaymentController::class, 'checkout'])->name('payment.checkout');
+    Route::get('/payment/success/{event}', [PaymentController::class, 'success'])->name('payment.success');
+    Route::get('/payment/cancel/{event}', [PaymentController::class, 'cancel'])->name('payment.cancel');
 });
 
 require __DIR__.'/auth.php';

@@ -158,13 +158,11 @@ class EventController extends Controller
             return redirect()->back()->with('error', "Le nombre maximum de participants est atteint.");
         }
 
-         if (!$event->clients()->where('user_id', $user->id)->exists()) {
-            $event->clients()->attach($user->id);
+        if ($event->clients()->where('user_id', $user->id)->exists()) {
+            return redirect()->back()->with('error', "Vous êtes déjà inscrit à cet événement.");
         }
 
-        $event->updateStatus();
-
-        return redirect()->back()->with('success', "Vous êtes inscrit à l'événement.");
+        return redirect()->route('payment.checkout', ['event' => $event]);
     }
 
     public function unregister(Event $event)
