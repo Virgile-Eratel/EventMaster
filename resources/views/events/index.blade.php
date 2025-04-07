@@ -9,11 +9,11 @@
         @if(auth()->check() && (auth()->user()->isAdmin() || auth()->user()->isOrganisateur()))
             <div class="mb-4">
                 @if(request()->has('my_events'))
-                    <button onclick="window.location.href='{{ route('events') }}'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button onclick="window.location.href='{{ route('events') }}'" class="font-bold py-2 px-4 rounded" style="background-color: #3b82f6; color: white;">
                         Vers tous les événements
                     </button>
                 @else
-                    <button onclick="window.location.href='{{ route('events', ['my_events' => 1]) }}'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button onclick="window.location.href='{{ route('events', ['my_events' => 1]) }}'" class="font-bold py-2 px-4 rounded" style="background-color: #3b82f6; color: white;">
                         Vers mes événements
                     </button>
                 @endif
@@ -22,11 +22,11 @@
             @if(auth()->check() && auth()->user()->isClient())
                 <div class="mb-4">
                     @if(request()->has('registered'))
-                        <button onclick="window.location.href='{{ route('events') }}'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <button onclick="window.location.href='{{ route('events') }}'" class="font-bold py-2 px-4 rounded" style="background-color: #3b82f6; color: white;">
                             Voir tous les événements
                         </button>
                     @else
-                        <button onclick="window.location.href='{{ route('events', ['registered' => 1]) }}'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <button onclick="window.location.href='{{ route('events', ['registered' => 1]) }}'" class="font-bold py-2 px-4 rounded" style="background-color: #3b82f6; color: white;">
                             Voir mes inscriptions
                         </button>
                     @endif
@@ -48,12 +48,12 @@
                 <tbody>
                 @foreach($events as $event)
                     <tr onclick="window.location.href='{{ route('event.show', $event) }}'" class="bg-white border-b hover:bg-gray-50 cursor-pointer">
-                        <td class="px-6 py-4">{{ $event->id }}</td>
-                        <td class="px-6 py-4">{{ $event->title }}</td>
-                        <td class="px-6 py-4">{{ \Carbon\Carbon::parse($event->event_date)->format('d/m/Y H:i') }}</td>
-                        <td class="px-6 py-4">{{ $event->organisateur->name }}</td>
-                        <td class="px-6 py-4">{{ $event->status }}</td>
-                        <td class="px-6 py-4">{{ $event->max_participants }}</td>
+                        <td class="px-6 py-4 text-gray-900">{{ $event->id }}</td>
+                        <td class="px-6 py-4 text-gray-900">{{ $event->title }}</td>
+                        <td class="px-6 py-4 text-gray-900">{{ \Carbon\Carbon::parse($event->event_date)->format('d/m/Y H:i') }}</td>
+                        <td class="px-6 py-4 text-gray-900">{{ $event->organisateur->name }}</td>
+                        <td class="px-6 py-4 text-gray-900">{{ $event->status }}</td>
+                        <td class="px-6 py-4 text-gray-900">{{ $event->max_participants }}</td>
                     </tr>
                 @endforeach
                 </tbody>

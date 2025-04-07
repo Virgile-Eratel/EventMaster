@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EventCancelledMail;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
@@ -121,6 +123,23 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         //
+    }
+
+    public function cancel(Event $event)
+    {
+        $user = auth()->user();
+
+         if (!($user->isAdmin() || ($user->isOrganisateur() && $event->organisateur_id == $user->id))) {
+            abort(403, 'Vous n\'êtes pas autorisé à annuler cet événement.');
+        }
+
+         $event->update(['status' => 'annule']);
+
+        foreach ($event->clients as $client) {
+            Mail::to($client->email)->sendNow(new EventCancelledMail($event, $client));
+        }
+
+        return redirect()->back()->with('success', "L'événement a été annulé et un mail a été envoyé aux participants.");
     }
 
     public function register(Event $event)

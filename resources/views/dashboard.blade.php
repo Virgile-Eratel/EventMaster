@@ -55,7 +55,7 @@
                 @if(auth()->check() && (auth()->user()->isAdmin() || auth()->user()->isOrganisateur()))
                     <div class="mt-6">
                         <a href="{{ route('events.create') }}"
-                           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                           class="inline-block font-bold py-2 px-4 rounded" style="background-color: #3b82f6; color: white;">
                             Créer un événement
                         </a>
                     </div>

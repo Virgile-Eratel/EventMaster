@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Event::factory()->count(10)->create();
+        Event::factory()->count(20)->create();
 
         User::factory()->admin()->create([
             'email' => 'admin@example.com',
@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory()->client()->create([
-            'email' => 'client@example.com',
+            'email' => 'marty.virgile@gmail.com',
             'name'  => 'Client1'
         ]);
     }

@@ -7,9 +7,9 @@
     <div class="container mx-auto px-4 mt-6">
         <div class="bg-white shadow-md rounded mb-6">
             @if($event->banner_image)
-                <div class="w-full">
+                <div class="w-full rounded-t overflow-hidden" style="height: 300px; max-height: 300px;">
                     <img src="{{ asset('storage/' . $event->banner_image) }}" alt="{{ $event->title }}"
-                         class="w-full h-64 object-cover rounded-t">
+                         style="width: 100%; height: 300px; object-fit: cover; object-position: center; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
                 </div>
             @endif
             <div class="p-6">
@@ -51,7 +51,7 @@
                  <form action="{{ route('event.unregister', $event) }}" method="POST" class="mb-4">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    <button type="submit" class="font-bold py-2 px-4 rounded" style="background-color: #ef4444; color: white;">
                         Désinscrire
                     </button>
                 </form>
@@ -59,7 +59,7 @@
                  @if($event->status === 'remplissage_en_cours' && $event->clients->count() < $event->max_participants)
                     <form action="{{ route('event.register', $event) }}" method="POST" class="mb-4">
                         @csrf
-                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                        <button type="submit" class="font-bold py-2 px-4 rounded" style="background-color: #22c55e; color: white;">
                             S'inscrire
                         </button>
                     </form>
@@ -71,10 +71,22 @@
         @if(auth()->check() && (auth()->user()->isAdmin() || (auth()->user()->isOrganisateur() && auth()->user()->id == $event->organisateur_id)))
             <div class="mt-4">
                 <a href="{{ route('event.edit', $event) }}"
-                   class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+                   class="inline-block font-bold py-2 px-4 rounded" style="background-color: #eab308; color: white;">
                     Modifier l'événement
                 </a>
             </div>
+        @endif
+        @if(auth()->check() && (auth()->user()->isAdmin() || (auth()->user()->isOrganisateur() && auth()->user()->id == $event->organisateur_id)))
+            @if($event->status !== 'annule')
+                <div class="mt-4">
+                    <form action="{{ route('event.cancel', $event) }}" method="POST" class="mb-4">
+                        @csrf
+                        <button type="submit" class="inline-block font-bold py-2 px-4 rounded" style="background-color: #6b7280; color: white;">
+                            Annuler l'événement
+                        </button>
+                    </form>
+                </div>
+            @endif
         @endif
     </div>
 </x-app-layout>

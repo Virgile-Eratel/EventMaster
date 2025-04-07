@@ -69,7 +69,7 @@
                                    class="mt-1 block w-full border-gray-300 rounded">
                         </div>
 
-                         @if(auth()->user()->isOrganisateur())
+                         @if(auth()->user()->isOrganisateur() || auth()->user()->isAdmin())
                             <input type="hidden" name="organisateur_id" value="{{ auth()->user()->id }}">
                         @endif
                         @if ($errors->any())
@@ -91,7 +91,7 @@
                         @endif
 
                         <button type="submit"
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                class="font-bold py-2 px-4 rounded" style="background-color: #3b82f6; color: white;">
                             Créer l'événement
                         </button>
                     </form>

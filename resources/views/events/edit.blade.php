@@ -24,7 +24,10 @@
                             <input type="file" name="banner_image" id="banner_image"
                                    class="mt-1 block w-full border-gray-300 rounded">
                             @if($event->banner_image)
-                                <img src="{{ asset('storage/' . $event->banner_image) }}" alt="{{ $event->title }}" class="w-32 mt-2">
+                                <div class="mt-2 rounded-t" style="width: 100%; height: 200px; overflow: hidden;">
+                                    <img src="{{ asset('storage/' . $event->banner_image) }}" alt="{{ $event->title }}"
+                                         style="width: 100%; height: 200px; object-fit: cover; object-position: center; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
+                                </div>
                             @endif
                         </div>
 
@@ -90,7 +93,7 @@
                         @endif
 
                         <button type="submit"
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                class="font-bold py-2 px-4 rounded" style="background-color: #3b82f6; color: white;">
                             Mettre à jour l'événement
                         </button>
                     </form>
