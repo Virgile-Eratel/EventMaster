@@ -1,5 +1,6 @@
 <?php
 
+// Je vous met la key et le secret de mon compte Stripe pour que vous puissiez tester le paiement
 return [
     'key' => env('STRIPE_KEY', 'pk_test_51RBBasQ4ySMgsFxSGlMVQeVpwxywUYkNiSZknfqKOoDaalchKEu7AGrwPXmRX96rTSVJwxBjqrnWv9mpADZnX8k200YV0c0k31'),
     'secret' => env('STRIPE_SECRET', 'sk_test_51RBBasQ4ySMgsFxSKw7mhgOGuME46BFgpEBuS5Ek2f1rKKT6ByGKg6ZhszZ74tvQA0u7xAKyUJKkka38d9AfKb3A00vNBlR2Di'),
