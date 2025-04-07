@@ -2,28 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EventRegistrationMail;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 
 class PaymentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
 
     public function checkout(Event $event)
     {
 
         if ($event->is_free) {
-
-            $event->clients()->attach(Auth::id());
+            $user = Auth::user();
+            $event->clients()->attach($user->id);
             $event->updateStatus();
-            return redirect()->route('event.show', $event)->with('success', 'Vous êtes inscrit à cet événement.');
+
+            try {
+                Mail::to($user->email)->send(new EventRegistrationMail($event, $user));
+            } catch (\Exception $e) {
+                \Log::error('Erreur lors de l\'envoi de l\'email de confirmation : ' . $e->getMessage());
+            }
+
+            return redirect()->route('event.show', $event)->with('success', 'Vous êtes inscrit à cet événement. Un email de confirmation vous a été envoyé.');
         }
 
 
@@ -111,10 +118,17 @@ class PaymentController extends Controller
             }
 
 
-            $event->clients()->attach(Auth::id());
+            $user = Auth::user();
+            $event->clients()->attach($user->id);
             $event->updateStatus();
 
-            return redirect()->route('event.show', $event)->with('success', 'Paiement réussi ! Vous êtes inscrit à cet événement.');
+            try {
+                Mail::to($user->email)->send(new EventRegistrationMail($event, $user, true));
+            } catch (\Exception $e) {
+                \Log::error('Erreur lors de l\'envoi de l\'email de confirmation : ' . $e->getMessage());
+            }
+
+            return redirect()->route('event.show', $event)->with('success', 'Paiement réussi ! Vous êtes inscrit à cet événement. Un email de confirmation vous a été envoyé.');
         } catch (ApiErrorException $e) {
             return redirect()->route('event.show', $event)->with('error', 'Erreur lors de la vérification du paiement : ' . $e->getMessage());
         }
