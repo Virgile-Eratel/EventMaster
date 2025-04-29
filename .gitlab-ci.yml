@@ -47,8 +47,12 @@ test:
   dependencies:
     - composer
   script:
+    - apt-get update && apt-get install -y sqlite3 libsqlite3-dev
     - cp .env.example .env
     - php artisan key:generate
+    - mkdir -p database
+    - touch database/database.sqlite
+    - php artisan migrate --force
     - php artisan test
   artifacts:
     paths:
