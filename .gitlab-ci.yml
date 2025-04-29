@@ -43,16 +43,22 @@ npm:
 
 test:
   stage: test
-  image: php:${PHP_VERSION}-cli
+  image: node:${NODE_VERSION}
   dependencies:
     - composer
+    - npm
   script:
-    - apt-get update && apt-get install -y sqlite3 libsqlite3-dev
+    - apt-get update && apt-get install -y php-cli php-mbstring php-xml php-bcmath php-tokenizer php-curl php-sqlite3 unzip curl git libzip-dev libpng-dev libjpeg-dev libfreetype6-dev
+    - docker-php-ext-install zip pdo_mysql gd
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - composer install --no-interaction --no-progress --prefer-dist
     - cp .env.example .env
     - php artisan key:generate
     - mkdir -p database
     - touch database/database.sqlite
     - php artisan migrate --force
+    - npm ci
+    - npm run build
     - php artisan test
   artifacts:
     paths:
