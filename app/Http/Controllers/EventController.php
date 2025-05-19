@@ -57,10 +57,16 @@ class EventController extends Controller
             'status'         => 'required|string',
             'max_participants' => 'required|integer',
             'organisateur_id' => 'required|exists:users,id',
+            'is_free'        => 'required|boolean',
+            'price'          => 'required_if:is_free,0|numeric|min:0',
         ]);
 
         if ($request->hasFile('banner_image')) {
              $data['banner_image'] = $request->file('banner_image')->store('/images/events', 'public');
+        }
+
+        if ($data['is_free']) {
+            $data['price'] = 0;
         }
 
         Event::create($data);
@@ -106,10 +112,16 @@ class EventController extends Controller
             'longitude'      => 'nullable|numeric',
             'status'         => 'required|string',
             'max_participants' => 'required|integer',
+            'is_free'        => 'required|boolean',
+            'price'          => 'required_if:is_free,0|numeric|min:0',
         ]);
 
         if ($request->hasFile('banner_image')) {
             $data['banner_image'] = $request->file('banner_image')->store('images/events', 'public');
+        }
+
+        if ($data['is_free']) {
+            $data['price'] = 0;
         }
 
         $event->update($data);
