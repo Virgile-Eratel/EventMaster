@@ -98,33 +98,60 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-         if (!(auth()->user()->isAdmin() || (auth()->user()->isOrganisateur() && auth()->user()->id == $event->organisateur_id))) {
+        if (!(auth()->user()->isAdmin() || (auth()->user()->isOrganisateur() && auth()->user()->id == $event->organisateur_id))) {
             abort(403, 'Vous n\'êtes pas autorisé à modifier cet événement.');
         }
 
-        $data = $request->validate([
-            'title'          => 'required|string|max:255',
-            'banner_image'   => 'nullable|image',
-            'description'    => 'nullable|string',
-            'event_date'     => 'required|date',
-            'address'        => 'nullable|string',
-            'latitude'       => 'nullable|numeric',
-            'longitude'      => 'nullable|numeric',
-            'status'         => 'required|string',
-            'max_participants' => 'required|integer',
-            'is_free'        => 'required|boolean',
-            'price'          => 'required_if:is_free,0|numeric|min:0',
-        ]);
+        if ($request->has('title')) {
+            $event->title = $request->input('title');
+        }
+
+        if ($request->has('description')) {
+            $event->description = $request->input('description');
+        }
+
+        if ($request->has('event_date')) {
+            $event->event_date = $request->input('event_date');
+        }
+
+        if ($request->has('address')) {
+            $event->address = $request->input('address');
+        }
+
+        if ($request->has('status')) {
+            $event->status = $request->input('status');
+        }
+
+        if ($request->has('max_participants')) {
+            $event->max_participants = $request->input('max_participants');
+        }
+
+        // Handle is_free field which might be a string "0"/"1" or boolean
+        if ($request->has('is_free')) {
+            $event->is_free = filter_var($request->input('is_free'), FILTER_VALIDATE_BOOLEAN);
+        }
+
+        // Always set price to ensure it's not null
+        if ($request->has('price') && !$event->is_free) {
+            $event->price = $request->input('price');
+        } else {
+            // Default to 0 for free events or if price is not provided
+            $event->price = 0;
+        }
+
+        if ($request->has('latitude')) {
+            $event->latitude = $request->input('latitude');
+        }
+
+        if ($request->has('longitude')) {
+            $event->longitude = $request->input('longitude');
+        }
 
         if ($request->hasFile('banner_image')) {
-            $data['banner_image'] = $request->file('banner_image')->store('images/events', 'public');
+            $event->banner_image = $request->file('banner_image')->store('images/events', 'public');
         }
 
-        if ($data['is_free']) {
-            $data['price'] = 0;
-        }
-
-        $event->update($data);
+        $event->save();
 
         return redirect()->route('event.show', $event)->with('success', "L'événement a bien été mis à jour.");
     }

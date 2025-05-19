@@ -67,18 +67,19 @@ class EventManagementTest extends TestCase
         $updateData = [
             'title' => 'Updated Title',
             'description' => $event->description,
-            'event_date' => $event->event_date,
+            'event_date' => $event->event_date->format('Y-m-d H:i:s'),
             'address' => $event->address,
             'status' => $event->status,
             'max_participants' => $event->max_participants,
-            'is_free' => $event->is_free,
-            'price' => $event->price
+            'is_free' => $event->is_free ? '1' : '0',
+            'price' => $event->is_free ? 0 : 10.00
         ];
 
         $response = $this->actingAs($organisateur)
+                         ->followingRedirects()
                          ->put(route('event.update', $event), $updateData);
 
-        $response->assertRedirect();
+        $response->assertStatus(200);
 
         $this->assertDatabaseHas('events', [
             'id' => $event->id,
@@ -141,18 +142,19 @@ class EventManagementTest extends TestCase
         $updateData = [
             'title' => 'Admin Updated Title',
             'description' => $event->description,
-            'event_date' => $event->event_date,
+            'event_date' => $event->event_date->format('Y-m-d H:i:s'),
             'address' => $event->address,
             'status' => $event->status,
             'max_participants' => $event->max_participants,
-            'is_free' => $event->is_free,
-            'price' => $event->price
+            'is_free' => $event->is_free ? '1' : '0',
+            'price' => $event->is_free ? 0 : 15.00
         ];
 
         $response = $this->actingAs($admin)
+                         ->followingRedirects()
                          ->put(route('event.update', $event), $updateData);
 
-        $response->assertRedirect();
+        $response->assertStatus(200);
 
         $this->assertDatabaseHas('events', [
             'id' => $event->id,
